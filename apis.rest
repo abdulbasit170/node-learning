@@ -1,0 +1,26 @@
+GET http://localhost:3000/todos
+
+###
+GET http://localhost:3000/todos/1
+
+###
+
+POST http://localhost:3000/todos
+content-type: application/json
+
+{
+    "value": "new todo"
+}
+
+###
+
+PATCH http://localhost:3000/todos/1
+content-type: application/json
+
+{
+    "value": "new todo"
+}
+
+###
+
+DELETE http://localhost:3000/todos/1
