@@ -1,12 +1,17 @@
-const express = require('express')
-const app = express()
+// imported express
+const express = require('express');
+// initialized express
+const app = express();
 
-app.use(express.json())
+// use body parser middleware
+app.use(express.json());
 
+// get request to respond simple string
 app.get('/', function (req, res) {
   res.send('Hello World')
-})
+});
 
+// Sample Todo tasks' variables
 const todo1 = {
   id: 0,
   value: 'default1',
@@ -16,24 +21,29 @@ const todo2 = {
   id: 1,
   value: 'default2',
 }
-
+// create array of the tasks above
 const todos = [todo1, todo2]
 
+// get request for all todo tasks
 app.get('/todos', function (req, res) {
-  res.send(todos)
-})
+  res.send(todos);
+});
 
+// get request for single todo
 app.get('/todos/:id', function (req, res) {
-  const { id } = req.params // object destructuring
+  const {
+    id
+  } = req.params // object destructuring
 
-  if (!id) return res.status(400).send('Id not present')
+  if (!id) return res.status(400).send('Id not present');
 
-  const foundTodo = todos.find((t) => t.id == id)
-  if (!foundTodo) return res.status(400).send(`No Todo found against id: ${id}`)
+  const foundTodo = todos.find((t) => t.id == id);
+  if (!foundTodo) return res.status(400).send(`No Todo found against id: ${id}`);
 
   return res.send(foundTodo)
 })
 
+// create todo
 app.post('/todos', function (req, res) {
   let value
   if (req.body && req.body.value) value = req.body.value
@@ -50,8 +60,11 @@ app.post('/todos', function (req, res) {
   res.send(newTodo)
 })
 
+// update todo
 app.patch('/todos/:id', function (req, res) {
-  const { id } = req.params // object destructuring
+  const {
+    id
+  } = req.params // object destructuring
 
   if (!id) return res.status(400).send('Id not present')
 
@@ -68,8 +81,11 @@ app.patch('/todos/:id', function (req, res) {
   res.send(foundTodo)
 })
 
+// delete todo 
 app.delete('/todos/:id', function (req, res) {
-  const { id } = req.params // object destructuring
+  const {
+    id
+  } = req.params // object destructuring
 
   if (!id) return res.status(400).send('Id not present')
 
@@ -80,6 +96,7 @@ app.delete('/todos/:id', function (req, res) {
   todos.splice(foundTodoIndex, 1)
 
   res.send('task is deleted')
-})
+});
 
-app.listen(3000)
+// app listening on port 3000
+app.listen(3000);
