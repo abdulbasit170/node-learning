@@ -1,7 +1,9 @@
 import mongoose from 'mongoose'
 
+export interface TodoPayload {
+  value: string
+}
+
 const schema = new mongoose.Schema({ value: 'string' })
 
-export const Todo = mongoose.model('Todo', schema)
-
-// export default  mongoose.model('Todo', schema)
+export default mongoose.model('Todo', schema)
