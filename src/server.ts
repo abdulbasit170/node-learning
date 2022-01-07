@@ -12,7 +12,6 @@ app.use(express.json())
 
 app.use('/', routes)
 
-
 mongoose.connect(
   'mongodb+srv://admin:admin@cluster0.utlbl.mongodb.net/myFirstDatabase?retryWrites=true&w=majority',
   (err: any) => {
@@ -22,18 +21,13 @@ mongoose.connect(
   }
 )
 
-
-
-// JWT 
 function generateAccessToken(username: string) {
   return jwt.sign({
     username
   }, TOKEN_SECRET, {
-    expiresIn: '1800s'
+    expiresIn: '864000000s'
   });
 }
-
-
 
 app.post('/api/createNewUser', (req, res) => {
 
@@ -43,7 +37,5 @@ app.post('/api/createNewUser', (req, res) => {
   res.json(token);
 
 });
-
-
 
 app.listen(3000)

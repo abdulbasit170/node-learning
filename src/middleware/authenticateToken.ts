@@ -1,7 +1,9 @@
 
+import jwt from 'jsonwebtoken';
+
 const TOKEN_SECRET: string = 'samplesecretkey';
 
-function authenticateToken(req: any, res: any, next: any) {
+export function authenticateToken(req: any, res: any, next: any) {
     const authHeader = req.headers['authorization']
     const token = authHeader && authHeader.split(' ')[1]
 
