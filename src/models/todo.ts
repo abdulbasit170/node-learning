@@ -1,9 +1,12 @@
-import mongoose from 'mongoose'
+import mongoose from 'mongoose';
 
+// create interface for schema - the type of the scehma
 export interface TodoPayload {
   value: string
-}
+};
 
-const schema = new mongoose.Schema({ value: 'string' })
+// create schema model using mongoose 
+const schema = new mongoose.Schema({ value: 'string' });
 
-export default mongoose.model('Todo', schema)
+// export schema with the key 'todo' 
+export default mongoose.model('Todo', schema);

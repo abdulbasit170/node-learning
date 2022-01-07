@@ -1,10 +1,19 @@
 GET http://localhost:3000/todos
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFiZHVsIGJhc2l0IiwiaWF0IjoxNjQxNTcyMjg2LCJleHAiOjE2NDE1NzQwODZ9.xAWbttJnna54HUorP_35F7te06kFk6zCyKE9Ovnm8w8
 
 ###
-GET http://localhost:3000/todos/61d709cf054f1f89a1f0dee8
+POST http://localhost:3000/api/createNewUser
+content-type: application/json
+
+{
+    "username": "abdul basit"
+}
 
 ###
+GET http://localhost:3000/todos/61d711d950599eb1ee6e74f5
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFiZHVsIGJhc2l0IiwiaWF0IjoxNjQxNTcyMjg2LCJleHAiOjE2NDE1NzQwODZ9.xAWbttJnna54HUorP_35F7te06kFk6zCyKE9Ovnm8w8
 
+###
 POST http://localhost:3000/todos
 content-type: application/json
 
@@ -24,3 +33,6 @@ content-type: application/json
 ###
 
 DELETE http://localhost:3000/todos/61d711e050599eb1ee6e74f7
+
+
+
