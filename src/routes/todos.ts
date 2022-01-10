@@ -2,14 +2,14 @@ import express from 'express'
 import { TodosController } from '../controllers/todos'
 import Todo from '../models/todo'
 
-const todosRouter = express.Router();
+const todosRouter = express.Router()
 
-const controller = new TodosController();
+const controller = new TodosController()
 
 todosRouter.get('/', async function (req: any, res: any) {
-  const todos = await Todo.find({});
+  const todos = await Todo.find({})
 
-  res.send(todos);
+  res.send(todos)
 })
 
 todosRouter.get('/:id', async function (req: any, res: any) {
@@ -17,9 +17,9 @@ todosRouter.get('/:id', async function (req: any, res: any) {
 
   if (!id) return res.status(400).send('Id not present')
 
-  const foundTodo_res = controller.getTodo(id);
+  const foundTodo = controller.getTodo(id)
 
-  return res.send(foundTodo_res)
+  return res.send(foundTodo)
 })
 
 todosRouter.post('/', async function (req: any, res: any) {
@@ -27,9 +27,9 @@ todosRouter.post('/', async function (req: any, res: any) {
 
   if (!value) return res.status(400).send('value is not present')
 
-  const newTodo_res = controller.createTodo(req.body)
+  const newTodo = controller.createTodo(req.body)
 
-  res.send(newTodo_res)
+  res.send(newTodo)
 })
 
 todosRouter.patch('/:id', async function (req: any, res: any) {
@@ -40,9 +40,9 @@ todosRouter.patch('/:id', async function (req: any, res: any) {
   const value = req.body?.value
   if (!value) return res.status(400).send('value is not present')
 
-  const updatedTodo_res = controller.updateTodo(id, req.body)
+  const updatedTodo = controller.updateTodo(id, req.body)
 
-  res.send(updatedTodo_res);
+  res.send(updatedTodo)
 })
 
 todosRouter.delete('/:id', async function (req: any, res: any) {
@@ -50,9 +50,9 @@ todosRouter.delete('/:id', async function (req: any, res: any) {
 
   if (!id) return res.status(400).send('Id not present')
 
-  const deleteTodo_res = controller.deleteTodo(id);
+  const deleteTodo = controller.deleteTodo(id)
 
-  res.send(deleteTodo_res)
+  res.send(deleteTodo)
 })
 
 export default todosRouter
