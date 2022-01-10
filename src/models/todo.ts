@@ -7,3 +7,5 @@ export interface TodoPayload {
 const schema = new mongoose.Schema({ value: 'string' });
 
 export default mongoose.model('Todo', schema);
+
+// added comment for git testing
