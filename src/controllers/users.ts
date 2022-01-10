@@ -1,45 +1,60 @@
-import User, { UserPayload } from '../models/user';
-
+import User, { UserPayload } from '../models/user'
 
 export class UsersController {
+  getUsers = async () => User.find({})
 
-    getTodo = async (id: number) => {
-        const foundUser = await User.findOne({ _id: id })
+  getUser = async (id: number) => {
+    const foundUser = await User.findOne({ _id: id })
 
-        if (!foundUser) return `No User found against id: ${id}`
+    if (!foundUser)
+      throw {
+        code: 400,
+        message: `No User found against id: ${id}`,
+      }
 
-        return foundUser
-    }
+    return foundUser
+  }
 
-    createUser = async (data: UserPayload) => {
-        const { username, name } = data
+  createUser = async (data: UserPayload) => {
+    const { username, name } = data
 
-        const newUser = new User({ username, name })
+    const alreadyExist = await User.findOne({ username })
+    if (alreadyExist)
+      throw {
+        code: 403,
+        message: `User already exists with username: ${username}`,
+      }
 
-        await newUser.save();
+    const newUser = new User({ username, name })
 
-        return newUser
-    }
+    await newUser.save()
 
-    updateUser = async (id: number, data: UserPayload) => {
-        const foundUser = await User.findOne({ _id: id });
+    return newUser
+  }
 
-        if (!foundUser) return `No User found against id: ${id}`;
+  updateUser = async (id: number, data: UserPayload) => {
+    const foundUser = await User.findOne({ _id: id })
 
-        const { username, name } = data
+    if (!foundUser) return `No User found against id: ${id}`
 
-        const updatedTodo = await User.findByIdAndUpdate(id, { username, name }, { new: true })
+    const { username, name } = data
 
-        return updatedTodo
-    }
+    const updatedTodo = await User.findByIdAndUpdate(
+      id,
+      { username, name },
+      { new: true }
+    )
 
-    deleteUser = async (id: number) => {
-        const foundUser = await User.findOne({ _id: id });
+    return updatedTodo
+  }
 
-        if (!foundUser) return `No User found against id: ${id}`;
+  deleteUser = async (id: number) => {
+    const foundUser = await User.findOne({ _id: id })
 
-        await foundUser.remove();
+    if (!foundUser) return `No User found against id: ${id}`
 
-        return 'task is deleted';
-    }
+    await foundUser.remove()
+
+    return 'task is deleted'
+  }
 }

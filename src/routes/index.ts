@@ -1,12 +1,12 @@
-import express from 'express';
-import { authenticateToken } from '../middleware/authenticateToken';
+import express from 'express'
+import { authenticateToken } from '../middlewares/authenticateToken'
 
-import todosRouter from './todos';
-import usersRouter from './users';
+import todosRouter from './todos'
+import usersRouter from './users'
 
 const app = express.Router()
 
-const TOKEN_SECRET: string = 'samplesecretkey';
+const TOKEN_SECRET: string = 'samplesecretkey'
 
 app.get('/', function (req: any, res: any) {
   res.send('Hello World')
