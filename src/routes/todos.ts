@@ -2,10 +2,8 @@ import express from 'express'
 import { TodosController } from '../controllers/todos'
 import Todo from '../models/todo'
 
-// initiate the express router
 const todosRouter = express.Router();
 
-// create new controller instance
 const controller = new TodosController();
 
 todosRouter.get('/', async function (req: any, res: any) {
@@ -15,66 +13,46 @@ todosRouter.get('/', async function (req: any, res: any) {
 })
 
 todosRouter.get('/:id', async function (req: any, res: any) {
-  const { id } = req.params // object destructuring
+  const { id } = req.params
 
-  // check if id is present in the request
   if (!id) return res.status(400).send('Id not present')
 
-  // findOne - mongoose db function to fetch the item with the id
-  const foundTodo = await Todo.findOne({ _id: id })
+  const foundTodo_res = controller.getTodo(id);
 
-  // if item is not found in the database
-  if (!foundTodo) return res.status(400).send(`No Todo found against id: ${id}`)
-
-  return res.send(foundTodo)
+  return res.send(foundTodo_res)
 })
 
 todosRouter.post('/', async function (req: any, res: any) {
   const value = req.body?.value
 
-  if (!value) return res.status(400).send('value is not present') 
+  if (!value) return res.status(400).send('value is not present')
 
-  // createTodo - function that we created in the controller
-  const newTodo = controller.createTodo(req.body)
+  const newTodo_res = controller.createTodo(req.body)
 
-  res.send(newTodo)
+  res.send(newTodo_res)
 })
 
 todosRouter.patch('/:id', async function (req: any, res: any) {
-  const { id } = req.params // object destructuring
+  const { id } = req.params
 
   if (!id) return res.status(400).send('Id not present')
 
-  // findOne - mongoose db - found 1 item with id
-  const foundTodo = await Todo.findOne({ _id: id })
-
-  if (!foundTodo) return res.status(400).send(`No Todo found against id: ${id}`)
-
-  // if body and value is available in the request
   const value = req.body?.value
-
   if (!value) return res.status(400).send('value is not present')
 
-  // findByIdAndUpdate mongoose db function to find and save
-  const updatedTodo = await Todo.findByIdAndUpdate(id, { value }, { new: true })
+  const updatedTodo_res = controller.updateTodo(id, req.body)
 
-  // return the updated item
-  res.send(updatedTodo);
+  res.send(updatedTodo_res);
 })
 
 todosRouter.delete('/:id', async function (req: any, res: any) {
-  const { id } = req.params // object destructuring
+  const { id } = req.params
 
   if (!id) return res.status(400).send('Id not present')
 
-  const foundTodo = await Todo.findOne({ _id: id })
-  if (!foundTodo) return res.status(400).send(`No Todo found against id: ${id}`)
+  const deleteTodo_res = controller.deleteTodo(id);
 
-  // mongoose db function to delete the item
-  await foundTodo.remove()
-
-  res.send('task is deleted')
+  res.send(deleteTodo_res)
 })
-
 
 export default todosRouter

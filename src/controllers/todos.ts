@@ -2,17 +2,45 @@ import Todo, { TodoPayload } from '../models/todo';
 
 
 export class TodosController {
-  // function to create a todo. this functon accepts data with type of TodoPayLoad
+
+  getTodo = async (id: number) => {
+    const foundTodo = await Todo.findOne({ _id: id })
+
+    if (!foundTodo) return `No Todo found against id: ${id}`
+
+    return foundTodo
+  }
+
   createTodo = async (data: TodoPayload) => {
     const { value } = data
 
-    // create new instance of the new todo scehma with the recieved value. 
     const newTodo = new Todo({ value })
 
-    // mongoose db function to save the data with await
     await newTodo.save();
 
-    // return the created item
     return newTodo
   }
+
+  updateTodo = async (id: number, data: TodoPayload) => {
+    const foundTodo = await Todo.findOne({ _id: id });
+
+    if (!foundTodo) return `No Todo found against id: ${id}`;
+
+    const { value } = data;
+
+    const updatedTodo = await Todo.findByIdAndUpdate(id, { value }, { new: true })
+
+    return updatedTodo
+  }
+
+  deleteTodo = async (id: number) => {
+    const foundTodo = await Todo.findOne({ _id: id });
+
+    if (!foundTodo) return `No Todo found against id: ${id}`;
+
+    await foundTodo.remove();
+
+    return 'task is deleted';
+  }
+
 }
