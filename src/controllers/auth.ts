@@ -1,5 +1,5 @@
 import User from '../models/user'
-import { generateAccessToken } from '../utils/generateAccessToken'
+import { generateAccessToken, generateRefreshToken } from '../utils/'
 
 interface loginPayload {
   username: string
@@ -17,8 +17,22 @@ export class AuthController {
       }
 
     const accessToken = generateAccessToken(username)
+    const refreshToken = generateRefreshToken(username)
 
-    return { accessToken }
+    // save in DB [OPTIONAL]
+
+    return { accessToken, refreshToken }
+  }
+
+  refresh = async (username: string) => {
+    await this.getUserByUsername(username)
+
+    const accessToken = generateAccessToken(username)
+    const refreshToken = generateRefreshToken(username)
+
+    // save in DB [OPTIONAL]
+
+    return { accessToken, refreshToken }
   }
 
   private getUserByUsername = async (username: string) => {

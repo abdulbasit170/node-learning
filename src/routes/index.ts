@@ -1,5 +1,5 @@
 import express from 'express'
-import { authenticateToken } from '../middlewares/authenticateToken'
+import { authenticateAccessToken } from '../middlewares/authenticateToken'
 
 import todosRouter from './todos'
 import usersRouter from './users'
@@ -11,8 +11,8 @@ app.get('/', function (req: any, res: any) {
   res.send('Hello World')
 })
 
-app.use('/todos', authenticateToken, todosRouter)
-app.use('/users', authenticateToken, usersRouter)
+app.use('/todos', authenticateAccessToken, todosRouter)
+app.use('/users', authenticateAccessToken, usersRouter)
 app.use('/auth', authRouter)
 
 export default app
