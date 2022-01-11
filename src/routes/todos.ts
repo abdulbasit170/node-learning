@@ -1,58 +1,96 @@
 import express from 'express'
 import { TodosController } from '../controllers/todos'
 import Todo from '../models/todo'
+import { todoValidation } from '../utils/validations'
 
 const todosRouter = express.Router()
 
 const controller = new TodosController()
 
 todosRouter.get('/', async function (req: any, res: any) {
-  const todos = await Todo.find({})
 
-  res.send(todos)
+  try {
+    const todos = await Todo.find({})
+
+    res.send(todos)
+  } catch (err: any) {
+    const statusCode = err.code ?? 500
+
+    delete err.code
+
+    res.status(statusCode).send(err)
+  }
+
 })
 
 todosRouter.get('/:id', async function (req: any, res: any) {
   const { id } = req.params
 
-  if (!id) return res.status(400).send('Id not present')
+  try {
+    const foundTodo = controller.getTodo(id)
 
-  const foundTodo = controller.getTodo(id)
+    return res.send(foundTodo)
+  } catch (err: any) {
+    const statusCode = err.code ?? 500
 
-  return res.send(foundTodo)
+    delete err.code
+
+    res.status(statusCode).send(err)
+  }
 })
 
 todosRouter.post('/', async function (req: any, res: any) {
-  const value = req.body?.value
+  const { error, value: body } = todoValidation(req.body)
+  if (error) return res.status(400).send(error.details[0].message)
 
-  if (!value) return res.status(400).send('value is not present')
+  try {
+    const newTodo = controller.createTodo(req.body)
 
-  const newTodo = controller.createTodo(req.body)
+    res.send(newTodo)
 
-  res.send(newTodo)
+  } catch (err: any) {
+    const statusCode = err.code ?? 500
+
+    delete err.code
+
+    res.status(statusCode).send(err)
+  }
 })
 
 todosRouter.patch('/:id', async function (req: any, res: any) {
   const { id } = req.params
 
-  if (!id) return res.status(400).send('Id not present')
+  const { error, value: body } = todoValidation(req.body)
+  if (error) return res.status(400).send(error.details[0].message)
 
-  const value = req.body?.value
-  if (!value) return res.status(400).send('value is not present')
+  try {
+    const updatedTodo = controller.updateTodo(id, req.body)
 
-  const updatedTodo = controller.updateTodo(id, req.body)
+    res.send(updatedTodo)
 
-  res.send(updatedTodo)
+  } catch (err: any) {
+    const statusCode = err.code ?? 500
+
+    delete err.code
+
+    res.status(statusCode).send(err)
+  }
 })
 
 todosRouter.delete('/:id', async function (req: any, res: any) {
   const { id } = req.params
 
-  if (!id) return res.status(400).send('Id not present')
+  try {
+    const deleteTodo = controller.deleteTodo(id)
 
-  const deleteTodo = controller.deleteTodo(id)
+    res.send(deleteTodo)
+  } catch (err: any) {
+    const statusCode = err.code ?? 500
 
-  res.send(deleteTodo)
+    delete err.code
+
+    res.status(statusCode).send(err)
+  }
 })
 
 export default todosRouter

@@ -6,7 +6,11 @@ export class TodosController {
   getTodo = async (id: number) => {
     const foundTodo = await Todo.findOne({ _id: id })
 
-    if (!foundTodo) return `No Todo found against id: ${id}`
+    if (!foundTodo)
+      throw {
+        code: 403,
+        message: `No Todo found against id: ${id}`
+      }
 
     return foundTodo
   }
@@ -24,7 +28,11 @@ export class TodosController {
   updateTodo = async (id: number, data: TodoPayload) => {
     const foundTodo = await Todo.findOne({ _id: id });
 
-    if (!foundTodo) return `No Todo found against id: ${id}`;
+    if (!foundTodo)
+      throw {
+        code: 403,
+        message: `No Todo found against id: ${id}`
+      }
 
     const { value } = data;
 
@@ -36,7 +44,11 @@ export class TodosController {
   deleteTodo = async (id: number) => {
     const foundTodo = await Todo.findOne({ _id: id });
 
-    if (!foundTodo) return `No Todo found against id: ${id}`;
+    if (!foundTodo)
+      throw {
+        code: 403,
+        message: `No Todo found against id: ${id}`
+      }
 
     await foundTodo.remove();
 

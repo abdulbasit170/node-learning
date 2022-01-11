@@ -1,20 +1,27 @@
 import express from 'express'
 import { UsersController } from '../controllers/users'
-import { registerUserValidation } from '../utils/validations'
+import { registerUserValidation, updateUserValidation } from '../utils/validations'
 
 const usersRouter = express.Router()
 
 const controller = new UsersController()
 
 usersRouter.get('/', async function (req: any, res: any) {
-  const users = await controller.getUsers()
+  try {
+    const users = await controller.getUsers()
 
-  res.send(users)
+    res.send(users)
+  } catch (err: any) {
+    const statusCode = err.code ?? 500
+
+    delete err.code
+
+    res.status(statusCode).send(err)
+  }
 })
 
 usersRouter.get('/:id', async function (req: any, res: any) {
   const { id } = req.params
-  if (!id) return res.status(400).send('Id not present')
 
   try {
     const foundUser = await controller.getUser(id)
@@ -46,23 +53,34 @@ usersRouter.post('/', async function (req: any, res: any) {
 
 usersRouter.patch('/:id', async function (req: any, res: any) {
   const { id } = req.params
-  const username = req.body?.username
-  const name = req.body?.name
 
-  if (!username) return res.status(400).send('username is not present')
-  if (!name) return res.status(400).send('name is not present')
+  const { error, value: body } = updateUserValidation(req.body)
+  if (error) return res.status(400).send(error.details[0].message)
 
-  const updatedUser = await controller.updateUser(id, req.body)
+  try {
+    const updatedUser = await controller.updateUser(id, body)
 
-  res.send(updatedUser)
+    res.send(updatedUser)
+  } catch (err: any) {
+    const statusCode = err.code ?? 500
+    delete err.code
+
+    res.status(statusCode).send(err)
+  }
 })
 
 usersRouter.delete('/:id', async function (req: any, res: any) {
   const { id } = req.params
 
-  const deleteUser = await controller.deleteUser(id)
+  try {
+    const deleteUser = await controller.deleteUser(id)
+    res.send(deleteUser)
 
-  res.send(deleteUser)
+  } catch (err: any) {
+    const statusCode = err.code ?? 500
+    delete err.code
+    res.status(statusCode).send(err)
+  }
 })
 
 export default usersRouter

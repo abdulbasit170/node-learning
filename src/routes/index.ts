@@ -6,8 +6,6 @@ import usersRouter from './users'
 
 const app = express.Router()
 
-const TOKEN_SECRET: string = 'samplesecretkey'
-
 app.get('/', function (req: any, res: any) {
   res.send('Hello World')
 })

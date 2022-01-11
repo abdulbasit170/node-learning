@@ -35,7 +35,11 @@ export class UsersController {
   updateUser = async (id: number, data: UserPayload) => {
     const foundUser = await User.findOne({ _id: id })
 
-    if (!foundUser) return `No User found against id: ${id}`
+    if (!foundUser)
+      throw {
+        code: 403,
+        message: `No User found against id: ${id}`
+      }
 
     const { username, name } = data
 
@@ -51,7 +55,11 @@ export class UsersController {
   deleteUser = async (id: number) => {
     const foundUser = await User.findOne({ _id: id })
 
-    if (!foundUser) return `No User found against id: ${id}`
+    if (!foundUser)
+      throw {
+        code: 403,
+        message: `No User found against id: ${id}`
+      }
 
     await foundUser.remove()
 
