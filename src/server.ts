@@ -22,11 +22,11 @@ mongoose.connect(process.env.DB_URL as string, (err: any) => {
 function generateAccessToken(username: string) {
   return jwt.sign(
     {
-      username,
+      username
     },
     process.env.TOKEN_SECRET as string,
     {
-      expiresIn: '864000000s',
+      expiresIn: '864000000s'
     }
   )
 }

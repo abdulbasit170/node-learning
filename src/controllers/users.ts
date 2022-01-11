@@ -9,7 +9,7 @@ export class UsersController {
     if (!foundUser)
       throw {
         code: 400,
-        message: `No User found against id: ${id}`,
+        message: `No User found against id: ${id}`
       }
 
     return foundUser
@@ -22,7 +22,7 @@ export class UsersController {
     if (alreadyExist)
       throw {
         code: 403,
-        message: `User already exists with username: ${username}`,
+        message: `User already exists with username: ${username}`
       }
 
     const newUser = new User({ username, name })

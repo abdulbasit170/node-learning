@@ -8,7 +8,6 @@ const todosRouter = express.Router()
 const controller = new TodosController()
 
 todosRouter.get('/', async function (req: any, res: any) {
-
   try {
     const todos = await Todo.find({})
 
@@ -20,7 +19,6 @@ todosRouter.get('/', async function (req: any, res: any) {
 
     res.status(statusCode).send(err)
   }
-
 })
 
 todosRouter.get('/:id', async function (req: any, res: any) {
@@ -47,7 +45,6 @@ todosRouter.post('/', async function (req: any, res: any) {
     const newTodo = controller.createTodo(req.body)
 
     res.send(newTodo)
-
   } catch (err: any) {
     const statusCode = err.code ?? 500
 
@@ -67,7 +64,6 @@ todosRouter.patch('/:id', async function (req: any, res: any) {
     const updatedTodo = controller.updateTodo(id, req.body)
 
     res.send(updatedTodo)
-
   } catch (err: any) {
     const statusCode = err.code ?? 500
 

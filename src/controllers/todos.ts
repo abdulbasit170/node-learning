@@ -1,8 +1,6 @@
-import Todo, { TodoPayload } from '../models/todo';
-
+import Todo, { TodoPayload } from '../models/todo'
 
 export class TodosController {
-
   getTodo = async (id: number) => {
     const foundTodo = await Todo.findOne({ _id: id })
 
@@ -20,13 +18,13 @@ export class TodosController {
 
     const newTodo = new Todo({ value })
 
-    await newTodo.save();
+    await newTodo.save()
 
     return newTodo
   }
 
   updateTodo = async (id: number, data: TodoPayload) => {
-    const foundTodo = await Todo.findOne({ _id: id });
+    const foundTodo = await Todo.findOne({ _id: id })
 
     if (!foundTodo)
       throw {
@@ -34,15 +32,19 @@ export class TodosController {
         message: `No Todo found against id: ${id}`
       }
 
-    const { value } = data;
+    const { value } = data
 
-    const updatedTodo = await Todo.findByIdAndUpdate(id, { value }, { new: true })
+    const updatedTodo = await Todo.findByIdAndUpdate(
+      id,
+      { value },
+      { new: true }
+    )
 
     return updatedTodo
   }
 
   deleteTodo = async (id: number) => {
-    const foundTodo = await Todo.findOne({ _id: id });
+    const foundTodo = await Todo.findOne({ _id: id })
 
     if (!foundTodo)
       throw {
@@ -50,9 +52,8 @@ export class TodosController {
         message: `No Todo found against id: ${id}`
       }
 
-    await foundTodo.remove();
+    await foundTodo.remove()
 
-    return 'task is deleted';
+    return 'task is deleted'
   }
-
 }

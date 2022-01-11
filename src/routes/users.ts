@@ -1,6 +1,9 @@
 import express from 'express'
 import { UsersController } from '../controllers/users'
-import { registerUserValidation, updateUserValidation } from '../utils/validations'
+import {
+  registerUserValidation,
+  updateUserValidation
+} from '../utils/validations'
 
 const usersRouter = express.Router()
 
@@ -75,7 +78,6 @@ usersRouter.delete('/:id', async function (req: any, res: any) {
   try {
     const deleteUser = await controller.deleteUser(id)
     res.send(deleteUser)
-
   } catch (err: any) {
     const statusCode = err.code ?? 500
     delete err.code
