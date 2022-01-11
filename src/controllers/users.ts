@@ -16,7 +16,7 @@ export class UsersController {
   }
 
   createUser = async (data: UserPayload) => {
-    const { username, name } = data
+    const { name, username, password } = data
 
     const alreadyExist = await User.findOne({ username })
     if (alreadyExist)
@@ -25,7 +25,7 @@ export class UsersController {
         message: `User already exists with username: ${username}`
       }
 
-    const newUser = new User({ username, name })
+    const newUser = new User({ name, username, password })
 
     await newUser.save()
 
@@ -63,6 +63,6 @@ export class UsersController {
 
     await foundUser.remove()
 
-    return 'task is deleted'
+    return 'user is deleted'
   }
 }

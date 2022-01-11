@@ -1,5 +1,5 @@
 GET http://localhost:3000/todos
-Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFiZHVsIGJhc2l0IiwiaWF0IjoxNjQxNTc2NDg1LCJleHAiOjI1MDU1NzY0ODV9.apgTrRlmrOX8yk6Qhqr1I9s_zgoT461L412XM-hgPi0
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFiZHVsYmFzaXQxNzAiLCJpYXQiOjE2NDE5MTc2MjcsImV4cCI6MjUwNTkxNzYyN30.RiKUsN9LxQu24-iVH2e1XNZ3v8Cy6q6VN0xo-H_2cAw
 
 ###
 POST http://localhost:3000/api/createNewUser

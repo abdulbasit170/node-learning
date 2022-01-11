@@ -1,13 +1,15 @@
 import mongoose from 'mongoose'
 
 export interface UserPayload {
-  username: string
   name: string
+  username: string
+  password?: string
 }
 
 const schema = new mongoose.Schema({
-  username: { type: String, unique: true },
-  name: { type: String }
+  name: { type: String },
+  username: { type: String, unique: true, required: true },
+  password: { type: String, required: true }
 })
 
 export default mongoose.model('User', schema)
