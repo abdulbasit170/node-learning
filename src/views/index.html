@@ -62,9 +62,18 @@
     </form>
     <script src="/socket.io/socket.io.js"></script>
     <script>
+      const person = prompt('Please enter your name')
+      if (person === null || person.length === 0) {
+        alert('Not connecting to socket without name!!!')
+      }
+
+      const searchParams = new URLSearchParams(window.location.search)
+      const roomName = searchParams.get('room')
+
       var socket = io({
         query: {
-          room: 'Room-1'
+          room: roomName,
+          name: person
         }
       })
 
@@ -81,9 +90,13 @@
 
       // join room
 
-      socket.on('reply', function (msg) {
+      socket.on('disconnect', function (msg) {
+        alert('Socket is disconnected!')
+      })
+
+      socket.on('message', function ({ username, msg }) {
         var item = document.createElement('li')
-        item.textContent = msg
+        item.textContent = `${username}: ${msg}`
         messages.appendChild(item)
         window.scrollTo(0, document.body.scrollHeight)
       })

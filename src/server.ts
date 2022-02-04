@@ -19,37 +19,44 @@ mongoose.connect(process.env.DB_URL as string, (err: any) => {
   console.log('Connected to db!')
 })
 
-// creating http server 
-const server = http.createServer(app);
+const server = http.createServer(app)
 
-const rooms = [
-  'Room-1',
-  'Room-2',
-  'Room-3'
-]
+const rooms = ['Room-1', 'Room-2', 'Room-3']
 
-const io = new Server(server);
-io.on('connection', (socket) => {
-  console.log('a user connected');
-  console.log(socket.handshake.query.room);
+const io = new Server(server)
 
-  socket.join(socket.handshake.query.room);
+io.on('connection', async (socket) => {
+  const { room, name } = socket.handshake.query
 
-  socket.on('disconnect', () => {
-    console.log('user disconnected');
-  });
+  if (room && rooms.includes(room as string)) {
+    socket.join(room)
 
-  socket.on('message', (msg) => {
-    console.log('message: ' + msg);
-    socket.emit('reply', msg);
-    // socket.broadcast.emit(msg);
+    io.to(room).emit('message', {
+      username: 'System',
+      msg: `A new user has joined this room! : ${name}`
+    })
 
-  });
+    const sockets = await io.in(room).fetchSockets()
+    const memberNames = sockets.map((socket) => socket.handshake.query.name)
+    io.to(room).emit('members', memberNames)
 
-  // broadcasting
-  // 
-});
+    socket.on('message', (msg) => {
+      io.to(room).emit('message', { username: name, msg })
+    })
 
+    socket.on('disconnect', async () => {
+      io.to(room).emit('message', {
+        username: 'System',
+        msg: `A user has left this room! : ${name}`
+      })
 
+      const sockets = await io.in(room).fetchSockets()
+      const memberNames = sockets.map((socket) => socket.handshake.query.name)
+      io.to(room).emit('members', memberNames)
+    })
+  } else {
+    socket.disconnect()
+  }
+})
 
 server.listen(3000)
